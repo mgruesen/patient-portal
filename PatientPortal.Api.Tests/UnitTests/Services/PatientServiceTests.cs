@@ -7,7 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using PatientPortal.Api.Models;
 
-namespace PatientPortal.Api.Tests.Services
+namespace PatientPortal.Api.Tests.UnitTests.Services
 {
     public class PatientServiceTests : TestDatabaseFixture
     {

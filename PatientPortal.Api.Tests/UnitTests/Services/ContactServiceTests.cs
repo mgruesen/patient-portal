@@ -7,7 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using PatientPortal.Api.Models;
 
-namespace PatientPortal.Api.Tests.Services
+namespace PatientPortal.Api.Tests.UnitTests.Services
 {
     public class ContactServiceTests : TestDatabaseFixture
     {
@@ -77,7 +77,7 @@ namespace PatientPortal.Api.Tests.Services
         }
 
         [Fact]
-        public void GetAllByIds_WithId_ShouldReturnProvider()
+        public void GetAllByIds_WithId_ShouldReturnContact()
         {
             var contact = _dbContext.Contacts.First(p => !p.IsDeleted);
             var contacts = _sut.GetByIds(contact.Id);
@@ -87,7 +87,7 @@ namespace PatientPortal.Api.Tests.Services
         }
 
         [Fact]
-        public async void Upsert_WithNewProvider_ShouldInsert()
+        public async void Upsert_WithNewContact_ShouldInsert()
         {
             using var transaction = Fixture.Connection.BeginTransaction();
             using var dbContext = Fixture.CreateDbContext(transaction);
@@ -96,7 +96,13 @@ namespace PatientPortal.Api.Tests.Services
 
             var contactModel = new ContactModel
             {
-                Name = "n", PolicyNumber = "pn", GroupNumber = "gn"
+                StreetName = "sname",
+                StreetNumber = "snum",
+                City = "city",
+                State = "state",
+                Zipcode = 1,
+                EmailAddress = "em",
+                PhoneNumber = "pn"
             };
 
             var newContact = await sut.Upsert(contactModel);
@@ -110,29 +116,48 @@ namespace PatientPortal.Api.Tests.Services
         }
 
         [Fact]
-        public async void Upsert_WithExistingProvider_ShouldUpdate()
+        public async void Upsert_WithExistingContact_ShouldUpdate()
         {
             using var transaction = Fixture.Connection.BeginTransaction();
             using var dbContext = Fixture.CreateDbContext(transaction);
             var sut = new ContactService(dbContext, _contactMapper);
 
-            var existingContact = new Contact { Name = "n", PolicyNumber = "pn", GroupNumber = "gn" };
-            dbContext.Providers.Add(existingContact);
+            var existingContact = new Contact
+            {
+                StreetName = "sname",
+                StreetNumber = "snum",
+                City = "city",
+                State = "state",
+                Zipcode = 1,
+                EmailAddress = "em",
+                PhoneNumber = "pn"
+            };
+            dbContext.Contacts.Add(existingContact);
             dbContext.SaveChanges();
 
             var existingContactModel = _contactMapper.MapContactModel(existingContact);
-            existingContactModel.StreetName = "newN";
-            existingContactModel.StreetNumber = "newPN";
-            existingContactModel.City = "newGN";
+            existingContactModel.StreetName = "newSName";
+            existingContactModel.StreetNumber = "newSNum";
+            existingContactModel.City = "newC";
+            existingContactModel.State = "newS";
+            existingContactModel.Zipcode = 11;
+            existingContactModel.PhoneNumber = "newPN";
+            existingContactModel.IsMobilePhone = true;
+            existingContactModel.EmailAddress = "newE";
 
             var updatedContactModel = await sut.Upsert(existingContactModel);
 
             Assert.NotNull(updatedContactModel);
             Assert.NotNull(updatedContactModel.Id);
             Assert.Equal(existingContactModel.Id, updatedContactModel.Id);
-            Assert.Equal(existingContactModel.Name, updatedContactModel.Name);
-            Assert.Equal(existingContactModel.PolicyNumber, updatedContactModel.PolicyNumber);
-            Assert.Equal(existingContactModel.GroupNumber, updatedContactModel.GroupNumber);
+            Assert.Equal(existingContactModel.StreetName, updatedContactModel.StreetName);
+            Assert.Equal(existingContactModel.StreetNumber, updatedContactModel.StreetNumber);
+            Assert.Equal(existingContactModel.City, updatedContactModel.City);
+            Assert.Equal(existingContactModel.State, updatedContactModel.State);
+            Assert.Equal(existingContactModel.Zipcode, updatedContactModel.Zipcode);
+            Assert.Equal(existingContactModel.PhoneNumber, updatedContactModel.PhoneNumber);
+            Assert.Equal(existingContactModel.EmailAddress, updatedContactModel.EmailAddress);
+            Assert.Equal(existingContactModel.IsMobilePhone, updatedContactModel.IsMobilePhone);
         }
 
         [Fact]
@@ -142,18 +167,27 @@ namespace PatientPortal.Api.Tests.Services
             using var dbContext = Fixture.CreateDbContext(transaction);
             var sut = new ContactService(dbContext, _contactMapper);
 
-            var provider = new Provider { Name = "n", PolicyNumber = "pn", GroupNumber = "gn" };
-            dbContext.Providers.Add(provider);
+            var contact = new Contact
+            {
+                StreetName = "sname",
+                StreetNumber = "snum",
+                City = "city",
+                State = "state",
+                Zipcode = 1,
+                EmailAddress = "em",
+                PhoneNumber = "pn"
+            };
+            dbContext.Contacts.Add(contact);
             dbContext.SaveChanges();
 
             var deletedIds = await sut.DeleteByIds();
 
             Assert.Empty(deletedIds);
 
-            var providerModels = sut.GetByIds(provider.Id);
+            var contactModels = sut.GetByIds(contact.Id);
 
-            Assert.NotEmpty(providerModels);
-            Assert.Equal(provider.Id, providerModels.First().Id.Value);
+            Assert.NotEmpty(contactModels);
+            Assert.Equal(contact.Id, contactModels.First().Id.Value);
         }
 
         [Fact]
@@ -163,20 +197,40 @@ namespace PatientPortal.Api.Tests.Services
             using var dbContext = Fixture.CreateDbContext(transaction);
             var sut = new ContactService(dbContext, _contactMapper);
 
-            var provider1 = new Provider { Name = "n", PolicyNumber = "pn", GroupNumber = "gn" };
-            var provider2 = new Provider { Name = "n", PolicyNumber = "pn", GroupNumber = "gn" };
-            dbContext.Providers.AddRange(provider1, provider2);
+            var contact1 = new Contact
+            {
+                StreetName = "sname1",
+                StreetNumber = "snum1",
+                City = "city1",
+                State = "state1",
+                Zipcode = 1,
+                EmailAddress = "em1",
+                PhoneNumber = "pn1"
+            };
+            var contact2 = new Contact
+            {
+                StreetName = "sname2",
+                StreetNumber = "snum2",
+                City = "city2",
+                State = "state2",
+                Zipcode = 2,
+                EmailAddress = "em2",
+                PhoneNumber = "pn2"
+            };
+            dbContext.Contacts.AddRange(contact1, contact2);
             dbContext.SaveChanges();
 
-            var deletedIds = await sut.DeleteByIds(provider1.Id, provider2.Id);
+            var deletedIds = await sut.DeleteByIds(contact1.Id);
 
             Assert.NotEmpty(deletedIds);
-            Assert.Contains(provider1.Id, deletedIds);
-            Assert.Contains(provider2.Id, deletedIds);
+            Assert.Contains(contact1.Id, deletedIds);
+            Assert.DoesNotContain(contact2.Id, deletedIds);
 
-            var providerModels = sut.GetByIds(provider1.Id, provider2.Id);
+            var contactModels = sut.GetByIds(contact1.Id, contact2.Id);
 
-            Assert.Empty(providerModels);
+            Assert.NotEmpty(contactModels);
+            Assert.Contains(contact2.Id, contactModels.Select(c => c.Id.Value));
+            Assert.DoesNotContain(contact1.Id, contactModels.Select(c => c.Id.Value));
         }
     }
 }
