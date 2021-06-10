@@ -1,0 +1,27 @@
+version: "3"
+services:
+  web:
+    build:
+      context: PatientPortal.Web
+    ports:
+      - 8080:8080
+    links:
+      - api
+    depends_on:
+      - api
+  api:
+    build:
+      context: PatientPortal.Api
+    ports:
+      - 5001:5001
+    links:
+      - db
+    depends_on:
+      - db
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=ThisIsATempPassword!
