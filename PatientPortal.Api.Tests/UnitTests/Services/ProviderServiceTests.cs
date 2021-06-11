@@ -76,7 +76,6 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
         {
             using var transaction = Fixture.Connection.BeginTransaction();
             using var dbContext = Fixture.CreateDbContext(transaction);
-
             var sut = new ProviderService(dbContext, _providerMapper);
 
             var providerModel = new ProviderModel { Name = "n", PolicyNumber = "pn", GroupNumber = "gn" };
