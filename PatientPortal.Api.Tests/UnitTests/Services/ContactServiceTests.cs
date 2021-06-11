@@ -1,4 +1,4 @@
-using PatientPortal.Services;
+using PatientPortal.Api.Services;
 using Xunit;
 using PatientPortal.Api.Mappers;
 using System;
@@ -11,76 +11,88 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
 {
     public class ContactServiceTests : TestDatabaseFixture
     {
-        private readonly PatientPortalDbContext _dbContext;
         private readonly IContactMapper _contactMapper;
-        private readonly ContactService _sut;
+        private readonly List<Contact> _contacts = new List<Contact>
+        {
+            new Contact
+            {
+                StreetName = "sname",
+                StreetNumber = "snum",
+                City = "city",
+                State = "state",
+                Zipcode = 1,
+                EmailAddress = "em",
+                PhoneNumber = "pn"
+            },
+            new Contact
+            {
+                StreetName = "sname2",
+                StreetNumber = "snum2",
+                City = "city2",
+                State = "state2",
+                Zipcode = 2,
+                EmailAddress = "em2",
+                PhoneNumber = "pn2"
+            },new Contact
+            {
+                StreetName = "sname3",
+                StreetNumber = "snum3",
+                City = "city3",
+                State = "state3",
+                Zipcode = 3,
+                EmailAddress = "em3",
+                PhoneNumber = "pn3",
+                IsDeleted = true
+            },
+        };
 
         public ContactServiceTests(TestDatabaseContext dbContext)
             : base(dbContext)
         {
-            _dbContext = Fixture.CreateDbContext();
-
-            _dbContext.Contacts.AddRange(new List<Contact>
-            {
-                new Contact
-                {
-                    StreetName = "sname",
-                    StreetNumber = "snum",
-                    City = "city",
-                    State = "state",
-                    Zipcode = 1,
-                    EmailAddress = "em",
-                    PhoneNumber = "pn"
-                },
-                new Contact
-                {
-                    StreetName = "sname2",
-                    StreetNumber = "snum2",
-                    City = "city2",
-                    State = "state2",
-                    Zipcode = 2,
-                    EmailAddress = "em2",
-                    PhoneNumber = "pn2"
-                },new Contact
-                {
-                    StreetName = "sname3",
-                    StreetNumber = "snum3",
-                    City = "city3",
-                    State = "state3",
-                    Zipcode = 3,
-                    EmailAddress = "em3",
-                    PhoneNumber = "pn3",
-                    IsDeleted = true
-                },
-            });
-
-            _dbContext.SaveChanges();
-
             _contactMapper = new ContactMapper();
-
-            _sut = new ContactService(_dbContext, _contactMapper);
         }
 
         [Fact]
         public void GetAllByIds_WithNoIdList_ShouldNotBeEmpty()
         {
-            var contacts = _sut.GetByIds();
+            using var transaction = Fixture.Connection.BeginTransaction();
+            using var dbContext = Fixture.CreateDbContext(transaction);
+            var sut = new ContactService(dbContext, _contactMapper);
+
+            dbContext.Contacts.AddRange(_contacts);
+            dbContext.SaveChanges();
+
+            var contacts = sut.GetByIds();
             Assert.NotEmpty(contacts);
         }
 
         [Fact]
         public void GetAllByIds_WithDeletedId_ShouldBeEmpty()
         {
-            var deleted = _dbContext.Contacts.First(p => p.IsDeleted);
-            var contacts = _sut.GetByIds(deleted.Id);
+            using var transaction = Fixture.Connection.BeginTransaction();
+            using var dbContext = Fixture.CreateDbContext(transaction);
+            var sut = new ContactService(dbContext, _contactMapper);
+
+            dbContext.Contacts.AddRange(_contacts);
+            dbContext.SaveChanges();
+
+            var deleted = dbContext.Contacts.First(p => p.IsDeleted);
+            var contacts = sut.GetByIds(deleted.Id);
             Assert.Empty(contacts);
         }
 
         [Fact]
         public void GetAllByIds_WithId_ShouldReturnContact()
         {
-            var contact = _dbContext.Contacts.First(p => !p.IsDeleted);
-            var contacts = _sut.GetByIds(contact.Id);
+            using var transaction = Fixture.Connection.BeginTransaction();
+            using var dbContext = Fixture.CreateDbContext(transaction);
+            var sut = new ContactService(dbContext, _contactMapper);
+
+            dbContext.Contacts.AddRange(_contacts);
+            dbContext.SaveChanges();
+
+            var contact = dbContext.Contacts.First(p => !p.IsDeleted);
+            var contacts = sut.GetByIds(contact.Id);
             Assert.NotEmpty(contacts);
             Assert.Single(contacts);
             Assert.Equal(contact.Id, contacts.Single().Id.Value);

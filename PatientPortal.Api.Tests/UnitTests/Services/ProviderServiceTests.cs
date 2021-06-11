@@ -1,4 +1,4 @@
-using PatientPortal.Services;
+using PatientPortal.Api.Services;
 using Xunit;
 using PatientPortal.Api.Mappers;
 using System;
@@ -11,52 +11,61 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
 {
     public class ProviderServiceTests : TestDatabaseFixture
     {
-        private readonly PatientPortalDbContext _dbContext;
         private readonly IProviderMapper _providerMapper;
-        private readonly ProviderService _sut;
+        private readonly List<Provider> _providers = new List<Provider>
+        {
+            new Provider { Name = "n1", PolicyNumber = "pn1", GroupNumber = "gn1" },
+            new Provider { Name = "n2", PolicyNumber = "pn2", GroupNumber = "gn2" },
+            new Provider { Name = "n3", PolicyNumber = "pn3", GroupNumber = "gn3" },
+            new Provider { Name = "n4", PolicyNumber = "pn4", GroupNumber = "gn4" },
+            new Provider { Name = "n5", PolicyNumber = "pn5", GroupNumber = "gn5" },
+            new Provider { Name = "n6", PolicyNumber = "pn6", GroupNumber = "gn6", IsDeleted = true }
+        };
 
         public ProviderServiceTests(TestDatabaseContext dbContext)
             : base(dbContext)
         {
-            _dbContext = Fixture.CreateDbContext();
-
-            _dbContext.Providers.AddRange(new List<Provider>
-            {
-                new Provider { Name = "n1", PolicyNumber = "pn1", GroupNumber = "gn1" },
-                new Provider { Name = "n2", PolicyNumber = "pn2", GroupNumber = "gn2" },
-                new Provider { Name = "n3", PolicyNumber = "pn3", GroupNumber = "gn3" },
-                new Provider { Name = "n4", PolicyNumber = "pn4", GroupNumber = "gn4" },
-                new Provider { Name = "n5", PolicyNumber = "pn5", GroupNumber = "gn5" },
-                new Provider { Name = "n6", PolicyNumber = "pn6", GroupNumber = "gn6", IsDeleted = true }
-            });
-
-            _dbContext.SaveChanges();
-
             _providerMapper = new ProviderMapper();
-
-            _sut = new ProviderService(_dbContext, _providerMapper);
         }
 
         [Fact]
         public void GetAllByIds_WithNoIdList_ShouldNotBeEmpty()
         {
-            var providers = _sut.GetByIds();
+            using var transaction = Fixture.Connection.BeginTransaction();
+            using var dbContext = Fixture.CreateDbContext(transaction);
+            var sut = new ProviderService(dbContext, _providerMapper);
+            dbContext.Providers.AddRange(_providers);
+            dbContext.SaveChanges();
+
+            var providers = sut.GetByIds();
             Assert.NotEmpty(providers);
         }
 
         [Fact]
         public void GetAllByIds_WithDeletedId_ShouldBeEmpty()
         {
-            var deleted = _dbContext.Providers.First(p => p.IsDeleted);
-            var providers = _sut.GetByIds(deleted.Id);
+            using var transaction = Fixture.Connection.BeginTransaction();
+            using var dbContext = Fixture.CreateDbContext(transaction);
+            var sut = new ProviderService(dbContext, _providerMapper);
+            dbContext.Providers.AddRange(_providers);
+            dbContext.SaveChanges();
+
+            var deleted = dbContext.Providers.First(p => p.IsDeleted);
+            var providers = sut.GetByIds(deleted.Id);
             Assert.Empty(providers);
         }
 
         [Fact]
         public void GetAllByIds_WithId_ShouldReturnProvider()
         {
-            var provider = _dbContext.Providers.First(p => !p.IsDeleted);
-            var providers = _sut.GetByIds(provider.Id);
+            using var transaction = Fixture.Connection.BeginTransaction();
+            using var dbContext = Fixture.CreateDbContext(transaction);
+            var sut = new ProviderService(dbContext, _providerMapper);
+            dbContext.Providers.AddRange(_providers);
+            dbContext.SaveChanges();
+
+            var provider = dbContext.Providers.First(p => !p.IsDeleted);
+            var providers = sut.GetByIds(provider.Id);
             Assert.NotEmpty(providers);
             Assert.Single(providers);
             Assert.Equal(provider.Id, providers.Single().Id.Value);

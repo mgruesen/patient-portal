@@ -1,4 +1,4 @@
-using PatientPortal.Services;
+using PatientPortal.Api.Services;
 using Xunit;
 using PatientPortal.Api.Mappers;
 using System;
@@ -11,52 +11,61 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
 {
     public class PatientServiceTests : TestDatabaseFixture
     {
-        private readonly PatientPortalDbContext _dbContext;
         private readonly IPatientMapper _patientMapper;
-        private readonly PatientService _sut;
+        private readonly List<Patient> _patients = new List<Patient>
+        {
+            new Patient { FirstName = "fn1", LastName = "ln1" },
+            new Patient { FirstName = "fn2", LastName = "ln2" },
+            new Patient { FirstName = "fn3", LastName = "ln3" },
+            new Patient { FirstName = "fn4", LastName = "ln4" },
+            new Patient { FirstName = "fn5", LastName = "ln5" },
+            new Patient { FirstName = "fn6", LastName = "ln6", IsDeleted = true }
+        };
 
         public PatientServiceTests(TestDatabaseContext dbContext)
             : base(dbContext)
         {
-            _dbContext = Fixture.CreateDbContext();
-
-            _dbContext.Patients.AddRange(new List<Patient>
-            {
-                new Patient { FirstName = "fn1", LastName = "ln1" },
-                new Patient { FirstName = "fn2", LastName = "ln2" },
-                new Patient { FirstName = "fn3", LastName = "ln3" },
-                new Patient { FirstName = "fn4", LastName = "ln4" },
-                new Patient { FirstName = "fn5", LastName = "ln5" },
-                new Patient { FirstName = "fn6", LastName = "ln6", IsDeleted = true }
-            });
-
-            _dbContext.SaveChanges();
-
             _patientMapper = new PatientMapper();
-
-            _sut = new PatientService(_dbContext, _patientMapper);
         }
 
         [Fact]
         public void GetAllByIds_WithNoIdList_ShouldNotBeEmpty()
         {
-            var patients = _sut.GetByIds();
+            using var transaction = Fixture.Connection.BeginTransaction();
+            using var dbContext = Fixture.CreateDbContext(transaction);
+            var sut = new PatientService(dbContext, _patientMapper);
+            dbContext.Patients.AddRange(_patients);
+            dbContext.SaveChanges();
+
+            var patients = sut.GetByIds();
             Assert.NotEmpty(patients);
         }
 
         [Fact]
         public void GetAllByIds_WithDeletedId_ShouldBeEmpty()
         {
-            var deleted = _dbContext.Patients.First(p => p.IsDeleted);
-            var patients = _sut.GetByIds(deleted.Id);
+            using var transaction = Fixture.Connection.BeginTransaction();
+            using var dbContext = Fixture.CreateDbContext(transaction);
+            var sut = new PatientService(dbContext, _patientMapper);
+            dbContext.Patients.AddRange(_patients);
+            dbContext.SaveChanges();
+
+            var deleted = dbContext.Patients.First(p => p.IsDeleted);
+            var patients = sut.GetByIds(deleted.Id);
             Assert.Empty(patients);
         }
 
         [Fact]
         public void GetAllByIds_WithId_ShouldReturnPatient()
         {
-            var patient = _dbContext.Patients.First(p => !p.IsDeleted);
-            var patients = _sut.GetByIds(patient.Id);
+            using var transaction = Fixture.Connection.BeginTransaction();
+            using var dbContext = Fixture.CreateDbContext(transaction);
+            var sut = new PatientService(dbContext, _patientMapper);
+            dbContext.Patients.AddRange(_patients);
+            dbContext.SaveChanges();
+
+            var patient = dbContext.Patients.First(p => !p.IsDeleted);
+            var patients = sut.GetByIds(patient.Id);
             Assert.NotEmpty(patients);
             Assert.Single(patients);
             Assert.Equal(patient.Id, patients.Single().Id.Value);
