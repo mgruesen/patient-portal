@@ -27,12 +27,12 @@ namespace PatientPortal.Api.Extensions
                 HashOptions.Iterations, HashAlgorithmName.SHA256);
             var salt = Convert.ToBase64String(algorithm.Salt);
             var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
-            return $"${HashOptions.Iterations}.{salt}.{key}";
+            return $"{HashOptions.Iterations}.{salt}.{key}";
         }
 
         public bool Check(string hash, string password)
         {
-            var passwordParts = password.Split('.', 3, StringSplitOptions.None);
+            var passwordParts = hash.Split('.', 3, StringSplitOptions.None);
 
             if (passwordParts.Length != 3)
                 throw new FormatException("Invalid hash format");

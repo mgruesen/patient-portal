@@ -18,5 +18,11 @@ namespace PatientPortal.Api
         public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<Provider> Providers { get; set; }
         public virtual DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasAlternateKey(u => u.Username);
+        }
     }
 }

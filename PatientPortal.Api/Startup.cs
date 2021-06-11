@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PatientPortal.Api.Extensions;
 using PatientPortal.Api.Mappers;
-using PatientPortal.Services;
+using PatientPortal.Api.Services;
 
 namespace PatientPortal.Api
 {
@@ -30,12 +24,19 @@ namespace PatientPortal.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IContactService, ContactService>();
             services.AddTransient<IProviderService, ProviderService>();
+            services.AddTransient<IUserService, UserService>();
+
             services.AddTransient<IPatientMapper, PatientMapper>();
             services.AddTransient<IContactMapper, ContactMapper>();
             services.AddTransient<IProviderMapper, ProviderMapper>();
+            services.AddTransient<IUserMapper, UserMapper>();
+
+            services.AddTransient<IPasswordHash, PasswordHash>();
+
             services.AddDbContext<PatientPortalDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("PatientPortal"));

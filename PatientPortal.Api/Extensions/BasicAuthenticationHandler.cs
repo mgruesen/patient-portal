@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PatientPortal.Api.Domain;
+using PatientPortal.Api.Models;
 using PatientPortal.Api.Services;
 
 namespace PatientPortal.Api.Extensions
@@ -34,7 +35,7 @@ namespace PatientPortal.Api.Extensions
             if (!Request.Headers.ContainsKey("Authorization"))
                 return AuthenticateResult.Fail("Missing Authorization Header");
 
-            User user = null;
+            UserModel user = null;
             try
             {
                 var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);

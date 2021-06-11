@@ -7,7 +7,7 @@ using PatientPortal.Api.Mappers;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PatientPortal.Services
+namespace PatientPortal.Api.Services
 {
     public interface IProviderService
     {

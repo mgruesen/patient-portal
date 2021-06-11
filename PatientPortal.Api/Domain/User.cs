@@ -8,10 +8,10 @@ namespace PatientPortal.Api.Domain
     {
         [Key]
         public virtual Guid Id { get; set; }
-        [Key]
         public virtual string Username { get; set; }
         public virtual string Password { get; set; }
         public virtual Guid? PatientId { get; set; }
+        public virtual bool IsDeleted { get; set;}
 
 #nullable enable
         [ForeignKey("PatientId")]

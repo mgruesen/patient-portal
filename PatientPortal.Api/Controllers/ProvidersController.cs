@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PatientPortal.Api.Models;
-using PatientPortal.Services;
+using PatientPortal.Api.Services;
 
 namespace PatientPortal.Api.Controllers
 {
