@@ -39,7 +39,16 @@ namespace PatientPortal.Api
 
             services.AddDbContext<PatientPortalDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("PatientPortal"));
+                var dbConfig = Configuration.GetSection("Database");
+                var connectionString = new SqlConnectionStringBuilder
+                {
+                    DataSource = dbConfig["Host"],
+                    UserID = dbConfig["User"],
+                    Password = dbConfig["Password"]
+                }.ToString();
+
+
+                options.UseSqlServer(connectionString);
             });
 
             services.AddSwaggerGen(c =>
