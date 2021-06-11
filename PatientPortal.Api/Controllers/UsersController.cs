@@ -10,7 +10,7 @@ using PatientPortal.Api.Services;
 
 namespace PatientPortal.Api.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -25,6 +25,7 @@ namespace PatientPortal.Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("authenticate")]
         public IActionResult Authenticate(LoginModel model)
         {

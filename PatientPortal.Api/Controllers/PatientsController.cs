@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PatientPortal.Api.Models;
@@ -9,6 +10,7 @@ using PatientPortal.Api.Services;
 
 namespace PatientPortal.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PatientsController : ControllerBase
