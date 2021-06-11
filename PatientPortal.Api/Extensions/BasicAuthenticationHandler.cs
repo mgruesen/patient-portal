@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using PatientPortal.Api.Domain;
 using PatientPortal.Api.Models;
 using PatientPortal.Api.Services;
 
@@ -40,7 +39,7 @@ namespace PatientPortal.Api.Extensions
             {
                 var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
                 var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
-                var credentials = Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
+                var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':', 2);
                 var username = credentials[0];
                 var password = credentials[1];
                 user = _userService.Authenticate(username, password);
@@ -53,21 +52,17 @@ namespace PatientPortal.Api.Extensions
             if (user == null)
                 return AuthenticateResult.Fail("Invalid Username or Password");
 
-            var claims = new[] {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.GetValueOrDefault().ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
             };
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-            return AuthenticateResult.Success(ticket);
+            return await Task.Run(() => AuthenticateResult.Success(ticket));
         }
 
-        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
-        {
-            Response.Headers["WWW-Authenticate"] = "Basic realm=\"\", charset=\"UTF-8\"";
-            return base.HandleChallengeAsync(properties);
-        }
     }
 }
