@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using PatientPortal.Api.Domain;
 
@@ -23,6 +24,23 @@ namespace PatientPortal.Api
         {
             modelBuilder.Entity<User>()
                 .HasAlternateKey(u => u.Username);
+            modelBuilder.Entity<User>()
+                .HasData(
+                    new User
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = "bob",
+                        // password1
+                        Password = "10000.WqcaDoKgiNEloduj0hELNA==.P7r8Tq20te86gr8ZpwJRs5JmvMo2wiHxsTA95C3ZyqM="
+                    },
+                    new User
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = "bill",
+                        // password2
+                        Password = "10000.iLl3E45elWO0WEJp4EVc9Q==.3a/Bo6vx2NXweAodzPhLTSiFmJYInMRYXPYMA4eLYfE="
+                    }
+                )
         }
     }
 }
