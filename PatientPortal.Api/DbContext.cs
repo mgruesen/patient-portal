@@ -40,7 +40,7 @@ namespace PatientPortal.Api
                         // password2
                         Password = "10000.iLl3E45elWO0WEJp4EVc9Q==.3a/Bo6vx2NXweAodzPhLTSiFmJYInMRYXPYMA4eLYfE="
                     }
-                )
+                );
         }
     }
 }
