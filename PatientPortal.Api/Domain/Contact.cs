@@ -11,7 +11,7 @@ namespace PatientPortal.Api.Domain
         public virtual string StreetNumber { get; set; }
         public virtual string City { get; set; }
         public virtual string State { get; set; }
-        public virtual int Zipcode { get; set; }
+        public virtual string Zipcode { get; set; }
         public virtual string EmailAddress { get; set; }
         public virtual string PhoneNumber { get; set; }
         public virtual bool IsMobilePhone { get; set; }
