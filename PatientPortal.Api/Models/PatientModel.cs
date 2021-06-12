@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using PatientPortal.Api.Domain;
 
 namespace PatientPortal.Api.Models
 {
@@ -10,5 +11,7 @@ namespace PatientPortal.Api.Models
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
+        public Guid? ContactId { get; set; }
+        public Guid? ProviderId { get; set; }
     }
 }
