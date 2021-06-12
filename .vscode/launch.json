@@ -5,15 +5,18 @@
             // Use IntelliSense to find out which attributes exist for C# debugging
             // Use hover for the description of the existing attributes
             // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-            "name": ".NET Core Launch (web)",
+            "name": "PatientPortal.Api",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "buildApi",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/PatientPortal.Api/bin/Debug/net5.0/PatientPortal.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/PatientPortal.Api",
             "stopAtEntry": false,
+            "launchBrowser": {
+              "enabled": true,              
+            },
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {
                 "action": "openExternally",
@@ -21,10 +24,32 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
             }
+        },
+        {
+          // Use IntelliSense to find out which attributes exist for C# debugging
+          // Use hover for the description of the existing attributes
+          // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+          "name": "PatientPortal.Web",
+          "type": "coreclr",
+          "request": "launch",
+          "preLaunchTask": "buildWeb",
+          // If you have changed target frameworks, make sure to update the program path.
+          "program": "${workspaceFolder}/PatientPortal.Web/bin/Debug/net5.0/PatientPortal.Web.dll",
+          "args": [],
+          "cwd": "${workspaceFolder}/PatientPortal.Web",
+          "stopAtEntry": false,
+          "launchBrowser": {
+            "enabled": true,              
+          },
+          // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+          "serverReadyAction": {
+              "action": "openExternally",
+              "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+          },
+          "env": {
+              "ASPNETCORE_ENVIRONMENT": "Development"
+          }
         },
         {
             "name": ".NET Core Attach",

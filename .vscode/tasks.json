@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "buildApi",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -13,6 +13,18 @@
             ],
             "problemMatcher": "$msCompile"
         },
+        {
+          "label": "buildWeb",
+          "command": "dotnet",
+          "type": "process",
+          "args": [
+              "build",
+              "${workspaceFolder}/PatientPortal.Web/PatientPortal.Web.csproj",
+              "/property:GenerateFullPaths=true",
+              "/consoleloggerparameters:NoSummary"
+          ],
+          "problemMatcher": "$msCompile"
+      },
         {
             "label": "publish",
             "command": "dotnet",
