@@ -20,7 +20,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
                 StreetNumber = "snum",
                 City = "city",
                 State = "state",
-                Zipcode = 1,
+                Zipcode = "1",
                 EmailAddress = "em",
                 PhoneNumber = "pn"
             },
@@ -30,7 +30,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
                 StreetNumber = "snum2",
                 City = "city2",
                 State = "state2",
-                Zipcode = 2,
+                Zipcode = "2",
                 EmailAddress = "em2",
                 PhoneNumber = "pn2"
             },new Contact
@@ -39,7 +39,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
                 StreetNumber = "snum3",
                 City = "city3",
                 State = "state3",
-                Zipcode = 3,
+                Zipcode = "3",
                 EmailAddress = "em3",
                 PhoneNumber = "pn3",
                 IsDeleted = true
@@ -112,7 +112,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
                 StreetNumber = "snum",
                 City = "city",
                 State = "state",
-                Zipcode = 1,
+                Zipcode = "1",
                 EmailAddress = "em",
                 PhoneNumber = "pn"
             };
@@ -140,7 +140,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
                 StreetNumber = "snum",
                 City = "city",
                 State = "state",
-                Zipcode = 1,
+                Zipcode = "1",
                 EmailAddress = "em",
                 PhoneNumber = "pn"
             };
@@ -152,7 +152,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
             existingContactModel.StreetNumber = "newSNum";
             existingContactModel.City = "newC";
             existingContactModel.State = "newS";
-            existingContactModel.Zipcode = 11;
+            existingContactModel.Zipcode = "11";
             existingContactModel.PhoneNumber = "newPN";
             existingContactModel.IsMobilePhone = true;
             existingContactModel.EmailAddress = "newE";
@@ -185,7 +185,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
                 StreetNumber = "snum",
                 City = "city",
                 State = "state",
-                Zipcode = 1,
+                Zipcode = "1",
                 EmailAddress = "em",
                 PhoneNumber = "pn"
             };
@@ -215,7 +215,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
                 StreetNumber = "snum1",
                 City = "city1",
                 State = "state1",
-                Zipcode = 1,
+                Zipcode = "1",
                 EmailAddress = "em1",
                 PhoneNumber = "pn1"
             };
@@ -225,7 +225,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
                 StreetNumber = "snum2",
                 City = "city2",
                 State = "state2",
-                Zipcode = 2,
+                Zipcode = "2",
                 EmailAddress = "em2",
                 PhoneNumber = "pn2"
             };

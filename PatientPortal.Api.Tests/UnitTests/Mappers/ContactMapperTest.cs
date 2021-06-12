@@ -25,7 +25,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Mappers
                 StreetNumber = "snum",
                 City = "city",
                 State = "state",
-                Zipcode = 1,
+                Zipcode = "1",
                 EmailAddress = "em",
                 PhoneNumber = "pn",
                 IsMobilePhone = true
@@ -54,7 +54,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Mappers
                 StreetNumber = "snum",
                 City = "city",
                 State = "state",
-                Zipcode = 1,
+                Zipcode = "1",
                 EmailAddress = "em",
                 PhoneNumber = "pn",
                 IsMobilePhone = true
