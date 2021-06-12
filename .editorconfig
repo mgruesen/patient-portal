@@ -6,7 +6,15 @@ root = true
 # Don't use tabs for indentation.
 [*]
 indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+end_of_line = lf
+charset = utf-8
 # (Please don't specify an indent_size here; that has too many unintended consequences.)
+
+# Razor
+[*.cshtml]
+indent_size = 4
 
 # Yaml
 [*.{yml,yaml}]
