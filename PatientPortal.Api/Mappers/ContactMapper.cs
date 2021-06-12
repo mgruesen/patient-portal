@@ -16,6 +16,7 @@ namespace PatientPortal.Api.Mappers
         {
             return new()
             {
+                Id = contactModel.Id ?? Guid.Empty,
                 StreetName = contactModel.StreetName,
                 StreetNumber = contactModel.StreetNumber,
                 City = contactModel.City,

@@ -87,7 +87,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
             var users = sut.GetByIds(user.Id);
             Assert.NotEmpty(users);
             Assert.Single(users);
-            Assert.Equal(user.Id, users.Single().Id.Value);
+            Assert.Equal(user.Id, users.Single().Id);
         }
 
 
@@ -143,7 +143,7 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
             var userModels = sut.GetByIds(user.Id);
 
             Assert.NotEmpty(userModels);
-            Assert.Equal(user.Id, userModels.First().Id.Value);
+            Assert.Equal(user.Id, userModels.First().Id);
         }
 
         [Fact]
@@ -175,8 +175,8 @@ namespace PatientPortal.Api.Tests.UnitTests.Services
             var userModels = sut.GetByIds(user1.Id, user2.Id);
 
             Assert.NotEmpty(userModels);
-            Assert.Contains(user2.Id, userModels.Select(c => c.Id.Value));
-            Assert.DoesNotContain(user1.Id, userModels.Select(c => c.Id.Value));
+            Assert.Contains(user2.Id, userModels.Select(c => c.Id));
+            Assert.DoesNotContain(user1.Id, userModels.Select(c => c.Id));
         }
 
         [Fact]

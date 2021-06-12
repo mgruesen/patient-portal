@@ -16,6 +16,7 @@ namespace PatientPortal.Api.Mappers
         {
             return new()
             {
+                Id = provider.Id ?? Guid.Empty,
                 Name = provider.Name,
                 PolicyNumber = provider.PolicyNumber,
                 GroupNumber = provider.GroupNumber,

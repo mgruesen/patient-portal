@@ -16,6 +16,7 @@ namespace PatientPortal.Api.Mappers
         {
             return new()
             {
+                Id = patientModel.Id ?? Guid.Empty,
                 FirstName = patientModel.FirstName,
                 LastName = patientModel.LastName,
             };
