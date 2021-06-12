@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PatientPortal.Web.Clients.PatientPortalApi;
 using PatientPortal.Web.Mappers;
+using PatientPortal.Web.Services;
 
 namespace PatientPortal.Web
 {
@@ -51,6 +52,7 @@ namespace PatientPortal.Web
 
             services.AddTransient<IApiClient, ApiClient>();
             services.AddTransient<IUserViewModelMapper, UserViewModelMapper>();
+            services.AddTransient<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

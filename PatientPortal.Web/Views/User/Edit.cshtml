@@ -1,0 +1,79 @@
+@model UserViewModel
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Edit @Model.Username Profile</h1>
+</div>
+<form method="post" asp-action="Update" asp-controller="User">
+    <table border="1" align="center">
+        <tr>
+            <th colspan="2" style="text-align: center;">Patient Details</th>
+        </tr>
+        <tr>
+            <td>First Name</td>
+            <td>@Html.EditorFor(m => m.FirstName)</td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td>@Html.EditorFor(m => m.LastName)</td>
+        </tr>
+        <tr>
+            <th colspan="2" style="text-align: center;">Provider Details</th>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>@Html.EditorFor(m => m.ProviderName)</td>
+        </tr>
+        <tr>
+            <td>Policy Number</td>
+            <td>@Html.EditorFor(m => m.PolicyNumber)</td>
+        </tr>
+        <tr>
+            <td>Group Number</td>
+            <td>@Html.EditorFor(m => m.GroupNumber)</td>
+        </tr>
+        <tr>
+            <th colspan="2" style="text-align: center;">Contact Details</th>
+        </tr>
+        <tr>
+            <td>Street Number</td>
+            <td>@Html.EditorFor(m => m.StreetNumber)</td>
+        </tr>
+        <tr>
+            <td>Street Name</td>
+            <td>@Html.EditorFor(m => m.StreetName)</td>
+        </tr>
+        <tr>
+            <td>City</td>
+            <td>@Html.EditorFor(m => m.City)</td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>@Html.EditorFor(m => m.State)</td>
+        </tr>
+        <tr>
+            <td>Zipcode</td>
+            <td>@Html.EditorFor(m => m.Zipcode)</td>
+        </tr>
+        <tr>
+            <td>Email Address</td>
+            <td>@Html.EditorFor(m => m.EmailAddress)</td>
+        </tr>
+        <tr>
+            <td>Phone Number</td>
+            <td>@Html.EditorFor(m => m.PhoneNumber)</td>
+        </tr>
+        <tr>
+            <td>Is Mobile Phone</td>
+            <td>@Html.EditorFor(m => m.IsMobilePhone)</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;">
+                <input type="submit" value="Save" />
+                <input type="button" value="Cancel" onclick="window.location.href='@Url.Action("Index", "User")';"/>
+            </td>
+        </tr>
+    </table>
+</form>

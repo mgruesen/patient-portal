@@ -1,0 +1,60 @@
+﻿@model UserViewModel
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Hello @Model.Username</h1>
+</div>
+<table border="1" align="center">
+    <tr>
+        <th colspan="2" style="text-align: center;">Patient Details</th>
+    </tr>
+    <tr>
+        <td>First Name</td>
+        <td>@Model.FirstName</td>
+    </tr>
+    <tr>
+        <td>Last Name</td>
+        <td>@Model.LastName</td>
+    </tr>
+    <tr>
+        <th colspan="2" style="text-align: center;">Provider Details</th>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td>@Model.ProviderName</td>
+    </tr>
+    <tr>
+        <td>Policy Number</td>
+        <td>@Model.PolicyNumber</td>
+    </tr>
+    <tr>
+        <td>Group Number</td>
+        <td>@Model.GroupNumber</td>
+    </tr>
+    <tr>
+        <th colspan="2" style="text-align: center;">Contact Details</th>
+    </tr>
+    <tr>
+        <td>Address</td>
+        <td>@Model.StreetName @Model.StreetNumber @Model.City @Model.State @Model.Zipcode</td>
+    </tr>
+    <tr>
+        <td>Email Address</td>
+        <td>@Model.EmailAddress</td>
+    </tr>
+    <tr>
+        <td>Phone Number</td>
+        <td>@Model.PhoneNumber</td>
+    </tr>
+    <tr>
+        <td>Is Mobile Phone</td>
+        <td>@(Model.IsMobilePhone ? "Yes" : "No")</td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: center;">
+            <input type="button" value="Edit" onclick="window.location.href='@Url.Action("Edit", "User")';"/>
+        </td>
+    </tr>
+</table>

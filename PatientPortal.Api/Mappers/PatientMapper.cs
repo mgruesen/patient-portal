@@ -16,11 +16,8 @@ namespace PatientPortal.Api.Mappers
         {
             return new()
             {
-                Id = patientModel.Id ?? Guid.Empty,
                 FirstName = patientModel.FirstName,
                 LastName = patientModel.LastName,
-                ContactId = patientModel.ContactId,
-                ProviderId = patientModel.ProviderId,
             };
         }
 
@@ -31,8 +28,6 @@ namespace PatientPortal.Api.Mappers
                 Id = patient.Id,
                 FirstName = patient.FirstName,
                 LastName = patient.LastName,
-                ContactId = patient.ContactId,
-                ProviderId = patient.ProviderId,
             };
         }
     }

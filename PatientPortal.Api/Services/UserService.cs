@@ -63,6 +63,8 @@ namespace PatientPortal.Api.Services
             else
             {
                 user.PatientId = userModel.PatientId;
+                user.ProviderId = userModel.ProviderId;
+                user.ContactId = user.ContactId;
             }
 
             await _dbContext.SaveChangesAsync();

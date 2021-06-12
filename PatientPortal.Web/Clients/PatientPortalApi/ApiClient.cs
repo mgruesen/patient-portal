@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -13,11 +14,14 @@ namespace PatientPortal.Web.Clients.PatientPortalApi
     public interface IApiClient
     {
         Task<UserModel> Login(string username, string password);
-        Task<ResponseModel> ListUsers(params Guid[] userIds);
-        Task<UserModel[]> GetUsersByIds(params string[] ids);
-        Task<ContactModel[]> GetContactsByIds(params string[] ids);
-        Task<ProviderModel[]> GetProvidersByIds(params string[] ids);
-        Task<PatientModel[]> GetPatientsByIds(params string[] ids);
+        Task<UserModel[]> GetUsersByIds(params Guid[] ids);
+        Task<ContactModel[]> GetContactsByIds(params Guid[] ids);
+        Task<ProviderModel[]> GetProvidersByIds(params Guid[] ids);
+        Task<PatientModel[]> GetPatientsByIds(params Guid[] ids);
+        Task<ContactModel> UpsertContact(ContactModel model);
+        Task<ProviderModel> UpsertProvider(ProviderModel model);
+        Task<PatientModel> UpsertPatient(PatientModel model);
+        Task<UserModel> UpdateUser(UserModel model);
     }
 
     public class ApiClient : IApiClient
@@ -40,55 +44,50 @@ namespace PatientPortal.Web.Clients.PatientPortalApi
                 new AuthenticationHeaderValue("Basic", basicAuthHeaderValue);
         }
 
-        public async Task<UserModel[]> GetUsersByIds(params string[] ids)
+        public async Task<UserModel[]> GetUsersByIds(params Guid[] ids)
         {
-            var model = new IdListModel { Ids = ids.Select(uid => Guid.Parse(uid)).ToArray() };
+            var model = new IdListModel { Ids = ids };
             var response = await _httpClient.PostAsJsonAsync("Users/list", model);
 
             if (!response.IsSuccessStatusCode)
                 return Array.Empty<UserModel>();
-            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel>();
-            return responseModel.Data as UserModel[];
+            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel<UserModel>>();
+            return responseModel.Data;
         }
 
-        public async Task<ContactModel[]> GetContactsByIds(params string[] ids)
+        public async Task<ContactModel[]> GetContactsByIds(params Guid[] ids)
         {
-            var model = new IdListModel { Ids = ids.Select(uid => Guid.Parse(uid)).ToArray() };
+            var model = new IdListModel { Ids = ids };
             var response = await _httpClient.PostAsJsonAsync("Contacts/list", model);
 
             if (!response.IsSuccessStatusCode)
                 return Array.Empty<ContactModel>();
-            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel>();
-            return responseModel.Data as ContactModel[];
+            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel<ContactModel>>();
+            return responseModel.Data;
         }
 
-        public async Task<ProviderModel[]> GetProvidersByIds(params string[] ids)
+        public async Task<ProviderModel[]> GetProvidersByIds(params Guid[] ids)
         {
-            var model = new IdListModel { Ids = ids.Select(uid => Guid.Parse(uid)).ToArray() };
+            var model = new IdListModel { Ids = ids };
             var response = await _httpClient.PostAsJsonAsync("Providers/list", model);
 
             if (!response.IsSuccessStatusCode)
                 return Array.Empty<ProviderModel>();
-            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel>();
-            return responseModel.Data as ProviderModel[];
+            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel<ProviderModel>>();
+            return responseModel.Data;
         }
 
-        public async Task<ResponseModel> ListUsers(params Guid[] userIds)
+        public async Task<PatientModel[]> GetPatientsByIds(params Guid[] ids)
         {
-            throw new NotImplementedException();
-        }
-
-
-        public async Task<PatientModel[]> GetPatientsByIds(params string[] ids)
-        {
-            var model = new IdListModel { Ids = ids.Select(uid => Guid.Parse(uid)).ToArray() };
+            var model = new IdListModel { Ids = ids };
             var response = await _httpClient.PostAsJsonAsync("Patients/list", model);
 
             if (!response.IsSuccessStatusCode)
                 return Array.Empty<PatientModel>();
-            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel>();
-            return responseModel.Data as PatientModel[];
+            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel<PatientModel>>();
+            return responseModel.Data;
         }
+
         public async Task<UserModel> Login(string username, string password)
         {
             var model = new LoginModel { Username = username, Password = password };
@@ -98,6 +97,50 @@ namespace PatientPortal.Web.Clients.PatientPortalApi
                 return null;
 
             return await response.Content.ReadFromJsonAsync<UserModel>();
+        }
+
+        public async Task<ContactModel> UpsertContact(ContactModel model)
+        {
+            var response = await _httpClient.PostAsJsonAsync("Contacts", model);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel<ContactModel>>();
+            return responseModel.Data.SingleOrDefault();
+        }
+
+        public async Task<ProviderModel> UpsertProvider(ProviderModel model)
+        {
+            var response = await _httpClient.PostAsJsonAsync("Providers", model);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel<ProviderModel>>();
+            return responseModel.Data.SingleOrDefault();
+        }
+
+        public async Task<PatientModel> UpsertPatient(PatientModel model)
+        {
+            var response = await _httpClient.PostAsJsonAsync("Patients", model);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel<PatientModel>>();
+            return responseModel.Data.SingleOrDefault();
+        }
+
+        public async Task<UserModel> UpdateUser(UserModel model)
+        {
+            var response = await _httpClient.PostAsJsonAsync("Users", model);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var responseModel = await response.Content.ReadFromJsonAsync<ResponseModel<UserModel>>();
+            return responseModel.Data.SingleOrDefault();
         }
     }
 }

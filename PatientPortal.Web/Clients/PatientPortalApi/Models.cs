@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace PatientPortal.Web.Clients.PatientPortalApi
 {
@@ -15,7 +16,7 @@ namespace PatientPortal.Web.Clients.PatientPortalApi
 
     public class ContactModel
     {
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; }
         public string StreetName { get; set; }
         public string StreetNumber { get; set; }
         public string City { get; set; }
@@ -31,6 +32,8 @@ namespace PatientPortal.Web.Clients.PatientPortalApi
         public Guid Id { get; set; }
         public string Username { get; set; }
         public Guid? PatientId { get; set; }
+        public Guid? ContactId { get; set; }
+        public Guid? ProviderId { get; set; }
     }
 
     public class ProviderModel
@@ -43,17 +46,15 @@ namespace PatientPortal.Web.Clients.PatientPortalApi
 
     public class PatientModel
     {
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Guid? ContactId { get; set; }
-        public Guid? ProviderId { get; set; }
     }
 
-    public class ResponseModel
+    public class ResponseModel<T>
     {
         public string Status { get; set; }
-        public object[] Data { get; set; }
+        public T[] Data { get; set; }
         public object Error { get; set; }
     }
 }

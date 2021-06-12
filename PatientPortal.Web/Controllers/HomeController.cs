@@ -74,7 +74,7 @@ namespace PatientPortal.Web.Controllers
             {
                 IsPersistent = true,
                 ExpiresUtc = DateTimeOffset.Now.AddHours(1),//DateTime.UtcNow + DateTime.
-                RedirectUri = ""
+                RedirectUri = "/User"
             };
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,

@@ -16,9 +16,11 @@ namespace PatientPortal.Api.Mappers
         {
             return new()
             {
-                Id = model.Id ?? Guid.Empty,
+                Id = model.Id,
                 Username = model.Username,
                 PatientId = model.PatientId,
+                ContactId = model.ContactId,
+                ProviderId = model.ProviderId,
             };
         }
 
@@ -28,7 +30,9 @@ namespace PatientPortal.Api.Mappers
             {
                 Id = user.Id,
                 Username = user.Username,
-                PatientId = user.PatientId
+                PatientId = user.PatientId,
+                ContactId = user.ContactId,
+                ProviderId = user.ProviderId
             };
         }
     }
