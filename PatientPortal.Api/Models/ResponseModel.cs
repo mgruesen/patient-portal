@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PatientPortal.Api.Models
 {
-    public class ReturnModel
+    public class ResponseModel
     {
         public string Status => Error == null ? "success" : "error";
         public object[] Data { get; set; }

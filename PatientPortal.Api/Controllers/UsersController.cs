@@ -37,7 +37,7 @@ namespace PatientPortal.Api.Controllers
 
         [HttpPost]
         [Route("list")]
-        public ReturnModel ListUsers(IdListModel model)
+        public ResponseModel ListUsers(IdListModel model)
         {
             IEnumerable<object> returnData;
             try
@@ -53,7 +53,7 @@ namespace PatientPortal.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ReturnModel> UpdateUser(UserModel model)
+        public async Task<ResponseModel> UpdateUser(UserModel model)
         {
             UserModel data;
             try
@@ -70,7 +70,7 @@ namespace PatientPortal.Api.Controllers
 
         [HttpPost]
         [Route("delete")]
-        public async Task<ReturnModel> DeleteUsers(IdListModel model)
+        public async Task<ResponseModel> DeleteUsers(IdListModel model)
         {
             IEnumerable<Guid> data;
             try
