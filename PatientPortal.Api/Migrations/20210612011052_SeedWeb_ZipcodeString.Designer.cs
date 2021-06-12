@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PatientPortal.Api;
 
 namespace PatientPortal.Api.Migrations
 {
     [DbContext(typeof(PatientPortalDbContext))]
-    partial class PatientPortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210612011052_SeedWeb_ZipcodeString")]
+    partial class SeedWeb_ZipcodeString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
