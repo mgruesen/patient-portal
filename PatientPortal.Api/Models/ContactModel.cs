@@ -16,10 +16,8 @@ namespace PatientPortal.Api.Models
         public string State { get; set; }
         [Required]
         public string Zipcode { get; set; }
-        [EmailAddress]
         [Required]
         public string EmailAddress { get; set; }
-        [Phone]
         [Required]
         public string PhoneNumber { get; set; }
         [Required]

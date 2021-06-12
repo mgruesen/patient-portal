@@ -37,9 +37,9 @@ namespace PatientPortal.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(UserViewModel model)
+        public async Task<IActionResult> Update(UserViewModel model)
         {
-            _userService.UpdateUser(model, GetCurrentUserId());
+            await _userService.UpdateUser(model, GetCurrentUserId());
             return RedirectToAction("Index");
         }
 

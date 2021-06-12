@@ -10,7 +10,7 @@ namespace PatientPortal.Web.Services
     public interface IUserService
     {
         Task<UserViewModel> LoadUser(Guid userId);
-        void UpdateUser(UserViewModel model, Guid userId);
+        Task UpdateUser(UserViewModel model, Guid userId);
     }
 
     public class UserService : IUserService
@@ -33,7 +33,7 @@ namespace PatientPortal.Web.Services
             return _userViewModelMapper.Compose(user, patient, contact, provider);
         }
 
-        public async void UpdateUser(UserViewModel viewModel, Guid userId)
+        public async Task UpdateUser(UserViewModel viewModel, Guid userId)
         {
             var userModel = (await _apiClient.GetUsersByIds(userId)).SingleOrDefault();
             (var patientModel, var contactModel, var providerModel) = _userViewModelMapper.Decompose(viewModel);
