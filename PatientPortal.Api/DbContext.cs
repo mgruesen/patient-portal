@@ -39,6 +39,13 @@ namespace PatientPortal.Api
                         Username = "bill",
                         // password2
                         Password = "10000.iLl3E45elWO0WEJp4EVc9Q==.3a/Bo6vx2NXweAodzPhLTSiFmJYInMRYXPYMA4eLYfE="
+                    },
+                    new User
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = "patientportal.web",
+                        // patientportalrox
+                        Password = "10000.yIRaKCUp9xVV86/W54uJfQ==.xm3v9vfaAQbYl07xBc3p/EeVnZH1ZFGwRAK0hZ6UTxg="
                     }
                 );
         }
