@@ -5,6 +5,10 @@ services:
       context: PatientPortal.Web
     ports:
       - 8080:8080
+      environment:
+        - Api:Host=api
+        - ASPNETCORE_URLS=http://*:8080
+        - ASPNETCORE_ENVIRONMENT=Development
     links:
       - api
     depends_on:
@@ -14,6 +18,10 @@ services:
       context: PatientPortal.Api
     ports:
       - 5001:5001
+    environment:
+      - Database:Host=db
+      - ASPNETCORE_URLS=http://*:5001
+      - ASPNETCORE_ENVIRONMENT=Development
     links:
       - db
     depends_on:
