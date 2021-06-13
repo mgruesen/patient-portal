@@ -40,8 +40,8 @@ The database is seeded with example users:
 
 Username | Password
 --- | ---
-bob | password1
-bill | password2
+`bob` | `password1`
+`bill` | `password2`
 
 ## Tests
 Use the docker-compose file to build and run tests. Ensure your Database container is built and EF core migrations have been applied before running tests.
