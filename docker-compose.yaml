@@ -35,3 +35,5 @@ services:
       - Database:Host=db
     links:
       - db
+    depends_on:
+      - db
