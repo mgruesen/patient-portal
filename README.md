@@ -7,20 +7,38 @@ Contains basic CRUD operations to manage patient information stored in a relatio
 ## PatientPortal Web
 MVC web application that interacts with the web API.
 
-## Run
-A docker-compose file has been provided to run the Api, Web, and Database. EF Core is used to manage the database state, and must apply migrations before connecting the Api to it.
+## Build
+Use the docker-compose file to build the Api, Web and Database containers.
 
 ```bash
-docker-compose up -d --build db
-dotnet tool install
+docker-compose build
+```
+
+## Run
+Use the docker-compose file to run the Api, Web, and Database containers. EF Core is used to manage the database state and must apply migrations before connecting the Api to it.
+
+```bash
+docker-compose up -d db
+dotnet tool restore
 dotnet ef database update --project PatientPortal.Api --connection 'server=localhost;user=app;password=Notreallysecure1'
 ```
 
 After that, the Api and Web applications can be started.
 
 ```bash
-docker-compose up -d --build api web
+docker-compose up -d api web
 ```
+
+Web application is hosted at http://localhost:8081
+
+Api application is hosted at http://localhost:5001
+
+The database is seeded with example users:
+
+Username | Password
+--- | ---
+bob | password1
+bill | password2
 
 ## Tests
 Some testing has been added to the Api.
