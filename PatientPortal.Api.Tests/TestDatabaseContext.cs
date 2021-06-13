@@ -12,7 +12,7 @@ namespace PatientPortal.Api.Tests
 
         public TestDatabaseContext()
         {
-            Connection = new SqlConnection("Server=localhost;User Id=SA;Password=ThisIsATempPassword!");
+            Connection = new SqlConnection(Configuration.GetConnectionString());
             Connection.Open();
         }
 

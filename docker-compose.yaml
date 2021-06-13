@@ -27,3 +27,11 @@ services:
       context: PatientPortal.Database
     ports:
       - 1433:1433
+  tests:
+    build:
+      context: .
+      dockerfile: PatientPortal.Api.Tests/Dockerfile
+    environment:
+      - Database:Host=db
+    links:
+      - db
