@@ -1,11 +1,14 @@
 # patient-portal
 A web based patient portal to collect and update patient information. Comprised of a web API and MVC web application with a SQL Server database.
 
-## PatientPortal Api
+## Api
 Contains basic CRUD operations to manage patient information stored in a relational database. It also handles user authentication and enforces basic authentication to the endpoints.
 
-## PatientPortal Web
-MVC web application that interacts with the web API. Allows users to login, view and edit profile information.
+## Web
+MVC web application that interacts with the Api. Allows users to login, view and edit profile information.
+
+## Database
+SQL Server database with application credential seed script. Runs in a container locally.
 
 ## Build
 Use the docker-compose file to build the Api, Web and Database containers.
