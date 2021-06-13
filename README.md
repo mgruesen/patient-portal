@@ -41,8 +41,9 @@ bob | password1
 bill | password2
 
 ## Tests
-Some testing has been added to the Api.
+Use the docker-compose file to build and run tests.
 
 ```bash
-dotnet test
+docker-compose build tests
+docker-compose run tests
 ```
