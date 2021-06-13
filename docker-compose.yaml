@@ -4,11 +4,9 @@ services:
     build:
       context: PatientPortal.Web
     ports:
-      - 8080:8080
+      - 8081:8081
     environment:
       - Api:Host=api
-      - ASPNETCORE_URLS=http://*:8080
-      - ASPNETCORE_ENVIRONMENT=Development
     links:
       - api
     depends_on:
