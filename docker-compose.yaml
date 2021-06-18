@@ -27,6 +27,14 @@ services:
       context: PatientPortal.Database
     ports:
       - 1433:1433
+  db-migration:
+    build:
+      context: .
+      dockerfile: PatientPortal.Database/Migrate.dockerfile
+    depends_on:
+      - db
+    links:
+      - db
   tests:
     build:
       context: .
