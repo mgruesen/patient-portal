@@ -22,11 +22,10 @@ Use the docker-compose file to run the Api, Web, and Database containers. EF Cor
 
 ```bash
 docker-compose up -d db
-dotnet tool restore
-dotnet ef database update --project PatientPortal.Api --connection 'server=localhost;user=app;password=Notreallysecure1'
+dotnet-compose run db-migration
 ```
 
-After that, the Api and Web applications can be started.
+After that the Api and Web applications can be started.
 
 ```bash
 docker-compose up -d api web
